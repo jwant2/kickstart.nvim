@@ -1,3 +1,4 @@
+-- use :help Conform to see available formatters
 return { -- Autoformat
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
@@ -27,9 +28,11 @@ return { -- Autoformat
     end,
     formatters_by_ft = {
       lua = { 'stylua' },
-      javascript = { 'prettier', stop_after_first = true },
-      typescript = { 'prettier', stop_after_first = true },
-      typescriptreact = { 'prettier', stop_after_first = true },
+      javascript = { 'prettier' },
+      typescript = { 'prettier' },
+      typescriptreact = { 'prettier' },
+      css = { 'prettier' },
+      scss = { 'prettier' },
       json = { 'prettier' },
     },
     formatters = { prettier = { require_cwd = true } },

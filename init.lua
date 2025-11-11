@@ -652,8 +652,6 @@ require('lazy').setup({
       }
     end,
   },
-  -- formatting
-  { import = 'formatting.plugins' },
   { -- autocompletion
     'saghen/blink.cmp',
     event = 'vimenter',
@@ -849,7 +847,6 @@ require('lazy').setup({
   --
   --  here are some example plugins that i've included in the kickstart repository.
   --  uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
@@ -857,16 +854,13 @@ require('lazy').setup({
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
-  -- note: the import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    this is the easiest way to modularize your config.
-  --
-  --  uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
+  -- formatting
+  { import = 'formatting.plugins' },
+  -- ai code completion
+  { import = 'ai.plugins' },
+  -- random custom plugins
   { import = 'custom.plugins' },
-  --
-  -- for additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
-  -- or use telescope!
-  -- in normal mode type `<space>sh` then write `lazy.nvim-plugin`
-  -- you can continue same window with `<space>sr` which resumes last telescope search
+
   require 'themes.packages.catppuccin',
 }, {
   ui = {
