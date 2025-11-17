@@ -7,7 +7,12 @@ return { -- Autoformat
     {
       '<leader>f',
       function()
-        require('conform').format { async = true, lsp_format = 'fallback' }
+        local ft = vim.bo.filetype
+        if ft == 'javascript' or ft == 'typescript' or ft == 'typescriptreact' or ft == 'javascriptreact' then
+          require('conform').format { async = true, formatters = { 'prettier', 'eslint_d' } }
+        else
+          require('conform').format { async = false, lsp_format = 'fallback' }
+        end
       end,
       mode = '',
       desc = '[F]ormat buffer',
@@ -16,7 +21,7 @@ return { -- Autoformat
   opts = {
     notify_on_error = false,
     format_on_save = function(bufnr)
-      local disable_filetypes = { c = true, cpp = true }
+      local disable_filetypes = { c = true, cpp = true, javascript = true, typescript = true, typescriptreact = true, javascriptreact = true }
       if disable_filetypes[vim.bo[bufnr].filetype] then
         return nil
       else
@@ -31,6 +36,7 @@ return { -- Autoformat
       javascript = { 'prettier' },
       typescript = { 'prettier' },
       typescriptreact = { 'prettier' },
+      javascriptreact = { 'prettier' },
       css = { 'prettier' },
       scss = { 'prettier' },
       json = { 'prettier' },

@@ -7,7 +7,31 @@ return {
       local lint = require 'lint'
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
+        javascript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
+        json = { 'eslint_d' },
       }
+
+      local function find_tsconfig_dir()
+        local cwd = vim.fn.getcwd()
+        local current_file = vim.api.nvim_buf_get_name(0)
+        local current_dir = vim.fn.fnamemodify(current_file, ':h')
+
+        while current_dir:find(cwd, 1, true) == 1 do
+          local tsconfig = current_dir .. '/tsconfig.json'
+          if vim.fn.filereadable(tsconfig) == 1 then
+            return current_dir
+          end
+          local parent = vim.fn.fnamemodify(current_dir, ':h')
+          if parent == current_dir then
+            break
+          end
+          current_dir = parent
+        end
+        return cwd
+      end
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
@@ -51,6 +75,8 @@ return {
           -- avoid superfluous noise, notably within the handy LSP pop-ups that
           -- describe the hovered symbol using Markdown.
           if vim.bo.modifiable then
+            -- Update eslint_d cwd to current buffer's tsconfig directory
+            lint.linters.eslint_d.cwd = find_tsconfig_dir()
             lint.try_lint()
           end
         end,
