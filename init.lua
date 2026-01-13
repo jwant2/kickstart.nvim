@@ -747,9 +747,12 @@ require('lazy').setup({
   { import = 'formatting.plugins' },
   -- ai code completion
   { import = 'ai.plugins' },
-  -- random custom plugins
-  { import = 'custom.plugins' },
+  -- tooling
+  { import = 'tools.plugins' },
+  -- misc
+  { import = 'misc.plugins' },
 
+  -- require one package for themes until I change my mind
   require 'themes.packages.catppuccin',
 }, {
   ui = {
