@@ -3,7 +3,7 @@ return {
   name = 'catppuccin',
   config = function()
     require('catppuccin').setup {
-      flavour = 'mocha',
+      flavour = 'frappe',
       transparent_background = true,
 
       custom_highlights = function(colors)

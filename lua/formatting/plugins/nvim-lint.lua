@@ -14,15 +14,18 @@ return {
         typescriptreact = { 'eslint_d' },
       }
 
-      local function find_tsconfig_dir()
+      local function find_root_dir()
         local cwd = vim.fn.getcwd()
         local current_file = vim.api.nvim_buf_get_name(0)
         local current_dir = vim.fn.fnamemodify(current_file, ':h')
 
         while current_dir:find(cwd, 1, true) == 1 do
-          local tsconfig = current_dir .. '/tsconfig.json'
-          if vim.fn.filereadable(tsconfig) == 1 then
-            return current_dir
+          -- Look for eslint config first, then tsconfig
+          local files_to_check = { '.eslintrc.js', '.eslintrc.json', 'tsconfig.json', 'package.json' }
+          for _, file in ipairs(files_to_check) do
+            if vim.fn.filereadable(current_dir .. '/' .. file) == 1 then
+              return current_dir
+            end
           end
           local parent = vim.fn.fnamemodify(current_dir, ':h')
           if parent == current_dir then
@@ -75,8 +78,8 @@ return {
           -- avoid superfluous noise, notably within the handy LSP pop-ups that
           -- describe the hovered symbol using Markdown.
           if vim.bo.modifiable then
-            -- Update eslint_d cwd to current buffer's tsconfig directory
-            lint.linters.eslint_d.cwd = find_tsconfig_dir()
+            -- Update eslint_d cwd to current buffer's root directory (eslint config or tsconfig)
+            lint.linters.eslint_d.cwd = find_root_dir()
             lint.try_lint()
           end
         end,

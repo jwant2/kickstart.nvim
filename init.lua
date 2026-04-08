@@ -282,7 +282,6 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-
       vim.keymap.set('n', '<leader>sp', builtin.git_files, { desc = '[S]earch Git [P]roject' })
 
       -- Slightly advanced example of overriding default behavior and theme
@@ -307,6 +306,14 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      -- Open [E]xplorer
+      vim.keymap.set('n', '<leader>e', vim.cmd.Ex, { desc = 'Open [E]xplorer' })
+
+      -- Open [Z]en mode
+      vim.keymap.set('n', '<leader>z', function()
+        require('zen-mode').toggle { window = { width = 0.90 } }
+      end, { desc = 'Open [Z]en mode' })
     end,
   },
 
@@ -683,19 +690,24 @@ require('lazy').setup({
       -- - sr)'  - [s]urround [r]eplace [)] [']
       require('mini.surround').setup()
 
-      -- simple and easy statusline.
-      --  you could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
+      -- statusline
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a nerd font
       statusline.setup { use_icons = vim.g.have_nerd_font }
 
-      -- you can configure sections in the statusline by overriding their
-      -- default behavior. for example, here we set the section for
-      -- cursor location to line:column
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
         return '%2l:%-2v'
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_git = function()
+        return ''
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_lsp = function()
+        return ''
       end
 
       -- ... and there is more!
